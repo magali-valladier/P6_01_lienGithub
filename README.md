@@ -7,7 +7,7 @@ HTML
 CSS
 JAVASCRIPT
 
-#FRAMEWORKS et OUTILS
+# FRAMEWORKS et OUTILS
 
 Angular
 Express.js
@@ -15,7 +15,7 @@ Node.js
 Pack Mongoose
 Mongo DB (Atlas DB)
 
-#Objectif
+# OBJECTIFS
 
 Le frontend du projet est fourni. Le backend doit être crée ainsi que l'API qui va permettre de communiquer entre les composants des 2 parties:
 
