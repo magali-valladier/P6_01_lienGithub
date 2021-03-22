@@ -4,7 +4,9 @@ const mongoose = require("mongoose");
 const app = express();
 const path = require("path");
 const Sauce = require('./models/Sauce');
-
+const xss = require('xss-clean');
+const helmet = require('helmet');
+const mongoSanitize = require('express-mongo-sanitize');
 const saucesRoutes = require('./routes/sauces');
 const userRoutes = require('./routes/user');
 
@@ -21,12 +23,21 @@ app.use((req, res, next) => {
     next();
   });
 
-app.use(bodyParser.json());
+// limit body size
+app.use(express.json({limit: "10kb" }));
 app.use('/images', express.static(path.join(__dirname, 'images')));
 
 
 app.use('/api/sauces', saucesRoutes);
 app.use('/api/auth', userRoutes);
 
-app.use(express.json());
+//input sanitization against XXS attacks
+app.use(xss());
+
+//Set HTTP headers with helmet
+app.use(helmet());
+
+//sanatization against NoSql injections
+app.use(mongoSanitize());
+
 module.exports = app;

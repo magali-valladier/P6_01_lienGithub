@@ -88,4 +88,19 @@ corps de la demande*/
       .catch(error => res.status(500).json({ error }));
   };
   
-  
+ /* exports.like = (req, res, next) => {
+// Définit le statut "j'aime" pour userID fourni
+
+const sauceObject = JSON.parse(req.body.sauce);
+Sauce.updateOne({ _id: req.params.id })
+  .then(() => { 
+    if (sauceObject.likes === 1) {
+
+    }else if (sauceObject.likes === -1){
+
+    }
+  }else {
+    
+  }
+  .catch(error => res.status(400).json({ error }));
+}; */
