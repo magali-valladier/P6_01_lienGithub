@@ -5,6 +5,8 @@ const User = require("../models/User");
 const jwt = require('jsonwebtoken');
 
 exports.signup = (req, res, next) => {
+//Chiffre le mot de passe de l'utilisateur, ajoute l'utilisateur à la base de données
+
     bcrypt.hash(req.body.password, 10)
       .then(hash => {
         const user = new User({
@@ -19,6 +21,9 @@ exports.signup = (req, res, next) => {
   };
 
   exports.login = (req, res, next) => {
+    /*Vérifie les informations d'identification de l'utilisateur, en renvoyant l'identifiant
+userID depuis la base de données et un jeton Web JSON signé (contenant également
+l'identifiant userID)*/
     User.findOne({ email: req.body.email })
       .then(user => {
         if (!user) {
