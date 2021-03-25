@@ -92,64 +92,53 @@ exports.deleteSauce = (req, res, next) => {
   
 exports.like = (req, res, next) => {
 const sauceObject = req.body;
-const likes = req.body.like;
-const dislikes = req.body.dislikes;
-const usersLiked = req.body.usersLiked;
-const usersDisliked = req.body.usersDisliked;
-const userId = req.body.userId;
-
-  if (sauceObject.likes === 1) {
+let likes = req.body.like;
+let dislikes = req.body.dislikes;
+let usersLiked = req.body.usersLiked;
+let usersDisliked = req.body.usersDisliked;
+let userId = req.body.userId;
+delete sauceObject._id;
+  if (sauceObject.like === 1) {
     Sauce.updateOne(
       { _id: req.params.id },
-        
-      {likes: +1},
-        
-      usersLiked.push(userId)
+        likes++,
+      
+     
   )
   .then(() => res.status(200).json({ message: "Sauce likée !" }))
   .catch((error) => res.status(400).json({ error }));
 
-  } else if (sauceObject.likes === -1) {
+  } else if (sauceObject.like === -1) {
       Sauce.updateOne(
         { _id: req.params.id },
-
-        {dislikes: +1},
         
-        usersDisliked.push(userId)
+        dislikes++,
                
   )
-  .then(() => res.status(200).json({ message: "Vous n'aimez plus cette sauce !" }))
+  .then(() => res.status(200).json({ message: "Vous n'aimez pas cette sauce !" }))
    .catch((error) => res.status(400).json({ error }));
 
   } else {
-      Sauce.findOne({ _id: req.params.id })
-        .then((sauce) => {
-          
-          if (sauce.usersLiked == userId) {
+              
+          if (usersLiked == userId) {
             Sauce.updateOne(
               { _id: req.params.id },
 
-              {likes: -1},
-
-              usersLiked.push(userId)
+              likes--,
       )
   .then(() => res.status(200).json({ message: "Like retiré !" }))
   .catch((error) => res.status(400).json({ error }));
 
-  } else if (sauce.usersDisliked == userId) {
+ } else if (usersDisliked == userId) {
       Sauce.updateOne(
         { _id: req.params.id },
          
-        { dislikes: -1},
-
-        usersDisliked.push(userId),
+        dislikes--,
       )
   .then(() =>
     res.status(200).json({ message: "Dislike retiré !" })
    )
     .catch((error) => res.status(400).json({ error }));
    }
-  })
-  .catch((error) => res.status(400).json({ error }));
   }
 };
