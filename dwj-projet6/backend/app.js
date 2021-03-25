@@ -9,6 +9,7 @@ const helmet = require('helmet');
 const mongoSanitize = require('express-mongo-sanitize');
 const saucesRoutes = require('./routes/sauces');
 const userRoutes = require('./routes/user');
+const MaskData = require('maskdata');
 
 mongoose.connect('mongodb+srv://Magali-Valladier:Sopekocko@projet6.1xja1.mongodb.net/test?retryWrites=true&w=majority',
   { useNewUrlParser: true,
@@ -23,8 +24,10 @@ app.use((req, res, next) => {
     next();
   });
 
+app.use(bodyParser.json());
 // limit body size
 app.use(express.json({limit: "10kb" }));
+
 app.use('/images', express.static(path.join(__dirname, 'images')));
 
 
