@@ -11,10 +11,10 @@ exports.createSauce = (req, res, next) => {
     ...sauceObject,
 //Capture et enregistre l'image en définissant correctement son image URL
 imageUrl: `${req.protocol}://${req.get('host')}/images/${req.file.filename}`,
-/*Remet les sauces aimées et celles détestées à 0, et les sauces usersliked et celles usersdisliked
-aux tableaux vides.*/
+//Remet les sauces aimées et celles détestées à 0
   likes: 0,
   dislikes: 0,
+//  et les sauces usersliked et celles usersdisliked aux tableaux vides
   usersLiked: [],
   usersDisliked: [],
 });
@@ -101,8 +101,10 @@ delete sauceObject._id;
   if (sauceObject.like === 1) {
     Sauce.updateOne(
       { _id: req.params.id },
-        likes++,
-      
+     {likes: 1} ,
+        {$push: 
+          { usersDisliked: userId }
+        },
      
   )
   .then(() => res.status(200).json({ message: "Sauce likée !" }))
@@ -112,8 +114,10 @@ delete sauceObject._id;
       Sauce.updateOne(
         { _id: req.params.id },
         
-        dislikes++,
-               
+        {dislikes: 1} ,
+        {$push: 
+          { usersDisliked: userId }
+        },   
   )
   .then(() => res.status(200).json({ message: "Vous n'aimez pas cette sauce !" }))
    .catch((error) => res.status(400).json({ error }));
@@ -124,7 +128,10 @@ delete sauceObject._id;
             Sauce.updateOne(
               { _id: req.params.id },
 
-              likes--,
+              {likes: -1} ,
+              {$pull: 
+                { usersDisliked: userId }
+              },
       )
   .then(() => res.status(200).json({ message: "Like retiré !" }))
   .catch((error) => res.status(400).json({ error }));
@@ -133,7 +140,10 @@ delete sauceObject._id;
       Sauce.updateOne(
         { _id: req.params.id },
          
-        dislikes--,
+        {dislikes: -1} ,
+        {$pull: 
+          { usersDisliked: userId }
+        },
       )
   .then(() =>
     res.status(200).json({ message: "Dislike retiré !" })
