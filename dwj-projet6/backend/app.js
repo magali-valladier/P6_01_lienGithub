@@ -3,13 +3,11 @@ const bodyParser = require('body-parser');
 const mongoose = require("mongoose");
 const app = express();
 const path = require("path");
-const Sauce = require('./models/Sauce');
 const xss = require('xss-clean');
 const helmet = require('helmet');
 const mongoSanitize = require('express-mongo-sanitize');
 const saucesRoutes = require('./routes/sauces');
 const userRoutes = require('./routes/user');
-const MaskData = require('maskdata');
 
 mongoose.connect('mongodb+srv://Magali-Valladier:Sopekocko@projet6.1xja1.mongodb.net/test?retryWrites=true&w=majority',
   { useNewUrlParser: true,

@@ -1,18 +1,21 @@
 const bcrypt = require("bcrypt");
 
 const User = require("../models/User");
-const MaskData = require("maskdata");
+const maskData = require("maskdata");
 const jwt = require('jsonwebtoken');
 
+const maskEmailOptions = {
+  maskWith: "*",
+  maxMaskedCharacters: 20,
+};
 exports.signup = (req, res, next) => {
 //Chiffre le mot de passe de l'utilisateur, ajoute l'utilisateur à la base de données
-
+    
     bcrypt.hash(req.body.password, 10)
       .then(hash => {
         const user = new User({
-          email: req.body.email, 
-          emailTest: MaskData.maskEmail2(req.body.email),
-          password: hash
+         email: maskData.maskEmail2(req.body.email, maskEmailOptions),
+         password: hash
         });
         user.save()
           .then(() => res.status(201).json({ message: 'Utilisateur créé !' }))
