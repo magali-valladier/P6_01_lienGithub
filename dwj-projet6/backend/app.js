@@ -8,6 +8,7 @@ const helmet = require('helmet');
 const mongoSanitize = require('express-mongo-sanitize');
 const saucesRoutes = require('./routes/sauces');
 const userRoutes = require('./routes/user');
+const rateLimit = require("express-rate-limit");
 
 mongoose.connect('mongodb+srv://Magali-Valladier:Sopekocko@projet6.1xja1.mongodb.net/test?retryWrites=true&w=majority',
   { useNewUrlParser: true,
@@ -32,7 +33,7 @@ app.use('/images', express.static(path.join(__dirname, 'images')));
 app.use('/api/sauces', saucesRoutes);
 app.use('/api/auth', userRoutes);
 
-//input sanitization against XXS attacks
+//input sanitization against XXS attacks(helmet also does the same in this package)
 app.use(xss());
 
 //Set HTTP headers with helmet
@@ -40,5 +41,8 @@ app.use(helmet());
 
 //sanatization against NoSql injections
 app.use(mongoSanitize());
+
+//limit several sessions in a shortime to avoid force's attacks
+app.use(rateLimit());
 
 module.exports = app;
