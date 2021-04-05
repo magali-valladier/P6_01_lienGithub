@@ -70,7 +70,9 @@ corps de la demande*/
 }: { ...req.body };
 //Si un fichier est fourni, la sauce avec chaîne est en req.body.sauce.
 
+        
   Sauce.updateOne({ _id: req.params.id }, { ...sauceObject, _id: req.params.id })
+  
   .then(() => res.status(200).json({ message: 'Recette modifiée !'}))
   .catch(error => res.status(400).json({ error }));
 };
