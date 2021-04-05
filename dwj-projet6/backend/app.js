@@ -10,7 +10,11 @@ const saucesRoutes = require('./routes/sauces');
 const userRoutes = require('./routes/user');
 const rateLimit = require("express-rate-limit");
 
-mongoose.connect('mongodb+srv://Magali-Valladier:Sopekocko@projet6.1xja1.mongodb.net/test?retryWrites=true&w=majority',
+
+//fichier de variable d'environnement pour db
+require('dotenv').config();
+
+mongoose.connect(process.env.connection,
   { useNewUrlParser: true,
     useUnifiedTopology: true })
   .then(() => console.log('Connexion à MongoDB réussie !'))
