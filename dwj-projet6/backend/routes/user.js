@@ -4,7 +4,7 @@ const router = express.Router();
 
 const userCtrl = require('../controllers/user');
 const passValidate = require('../middleware/passValidate');
-
+const mailValidate = require('../middleware/mailValidate');
 const rateLimit = require("express-rate-limit");
 
 const rateLimiter = rateLimit({
@@ -14,7 +14,7 @@ const rateLimiter = rateLimit({
 });
 
 
-router.post('/signup', passValidate, userCtrl.signup);
+router.post('/signup',mailValidate, passValidate, userCtrl.signup);
 router.post('/login',rateLimiter, userCtrl.login);
 
 module.exports = router;
